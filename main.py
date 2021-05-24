@@ -37,9 +37,6 @@ class Discovery:
     def close(self):
         self.zeroconf.close()
 
-def menuitem_response(w, buf):
-    print(f"{w=}, {buf=}")
-
 def toggle_light(menu_item, light, isOn, render):
     if isOn:
         light.off()
