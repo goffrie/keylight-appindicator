@@ -5,14 +5,14 @@ gi.require_version('AppIndicator3', '0.1')
 from gi.repository import Gtk, GLib
 from gi.repository import AppIndicator3 as appindicator
 
-from zeroconf import ServiceBrowser, Zeroconf
+from zeroconf import ServiceBrowser, ServiceListener, Zeroconf
 from time import sleep, time
 import socket
 from typing import cast
 from leglight import LegLight
 import logging
 
-class Discovery:
+class Discovery(ServiceListener):
     def __init__(self, on_update):
         self.known = dict()
         self.on_update = on_update
@@ -33,6 +33,9 @@ class Discovery:
         logging.debug("Found light @ {}:{}".format(ip, port))
         self.known[(type, name)] = LegLight(address=ip, port=port, name=lname, server=server)
         self.on_update()
+
+    def update_service(self, zeroconf, type, name):
+        pass
 
     def close(self):
         self.zeroconf.close()
